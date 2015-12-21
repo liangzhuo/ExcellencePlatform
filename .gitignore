@@ -1,2 +1,14 @@
+#idea
+.idea/
+
+*.class
+.classpath/
+.project/
+.setting/
+target/
+bin/
 .metadata/
-RemoteSystemsTempFiles/
+Servers/
+RemoteSystemsTempFiles
+log/
+
