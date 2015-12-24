@@ -1,14 +1,14 @@
-#idea
+#idea#
 .idea/
+*.iml
 
-*.class
+#Maven#
+target/
+
+#Eclipse#
+.setting/
+.metadata/
 .classpath/
 .project/
-.setting/
-target/
-bin/
-.metadata/
-Servers/
-RemoteSystemsTempFiles
-log/
+
 
