@@ -1,5 +1,6 @@
 package com.liang.chapter2.service;
 
+import com.liang.chapter2.helper.DatabaseHelper;
 import com.liang.chapter2.model.Customer;
 import com.liang.chapter2.util.PropsUtil;
 import org.slf4j.Logger;
@@ -19,35 +20,35 @@ public class CustomerService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CustomerService.class);
 
-    private static final String DRIVER;
-    private static final String URL;
-    private static final String USERNAME;
-    private static final String PASSWORD;
-
-    static{
-        Properties conf = PropsUtil.loadProps("config.properties");
-        DRIVER = conf.getProperty("jdbc.driver");
-        URL = conf.getProperty("jdbc.url");
-        USERNAME = conf.getProperty("jdbc.username");
-        PASSWORD = conf.getProperty("jdbc.password");
-
-        try {
-            Class.forName(DRIVER);
-        } catch (ClassNotFoundException e) {
-            LOGGER.error("can not load jdbc driver", e);
-        }
-    }
-
     /**
      * 获取客户列表
      *
      */
     public List<Customer> getCustomerList(){
+        String sql = "select * from customer";
+        LOGGER.info("Select Customer List Sql: " + sql);
+        return DatabaseHelper.queryEntityList(Customer.class, sql);
+        /**
+         * Simple QueryRunner Query
+         */
+        /*
+        Connection conn = DatabaseHelper.getConnection();
+        try {
+            String sql = "select * from customer";
+            return DatabaseHelper.queryEntityList(conn, Customer.class, sql);
+        } finally {
+            DatabaseHelper.closeConnection();
+        }
+        */
+        /**
+         * JDBC
+         */
+        /*
         Connection conn = null;
         List<Customer> customerList = new ArrayList<Customer>();
         try {
             String sql = "select * from customer";
-            conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+            conn = DatabaseHelper.getConnection();
             PreparedStatement stmt = conn.prepareStatement(sql);
             ResultSet rs = stmt.executeQuery();
             while(rs.next()){
@@ -64,15 +65,10 @@ public class CustomerService {
         } catch (SQLException e) {
             LOGGER.error("execute sql failure", e);
         } finally {
-            if(conn != null){
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                    LOGGER.error("close connection failure", e);
-                }
-            }
+            DatabaseHelper.closeConnection(conn);
         }
         return customerList;
+        */
     }
 
     /**
@@ -88,32 +84,30 @@ public class CustomerService {
      * 获取客户
      */
     public Customer getCustomer(long id){
-        // TODO
-        return null;
+        String sql = "select * from customer where id=?";
+        Object[] params = {id};
+        return DatabaseHelper.queryEntity(Customer.class, sql, params);
     }
 
     /**
      * 创建客户
      */
     public boolean createCustomer(Map<String, Object> fieldMap){
-        // TODO
-        return false;
+        return DatabaseHelper.insertEntity(Customer.class, fieldMap);
     }
 
     /**
      * 更新客户
      */
     public boolean updateCustomer(long id, Map<String, Object> fieldMap){
-        // TODO
-        return false;
+        return DatabaseHelper.updateEntity(Customer.class, id, fieldMap);
     }
 
     /**
      * 删除客户
      */
     public boolean deleteCustomer(long id){
-        // TODO
-        return false;
+        return DatabaseHelper.deleteEntity(Customer.class, id);
     }
 
 }
