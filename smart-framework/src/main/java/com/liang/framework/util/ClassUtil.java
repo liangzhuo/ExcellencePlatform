@@ -81,7 +81,8 @@ public final class ClassUtil {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error("get class set failure", e);
+            throw new RuntimeException(e);
         }
         return null;
     }
