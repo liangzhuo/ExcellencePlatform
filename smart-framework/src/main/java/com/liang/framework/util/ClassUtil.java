@@ -47,6 +47,14 @@ public final class ClassUtil {
     }
 
     /**
+     * 加载类 （执行类的静态代码块）
+     * @param className
+     */
+    public static void loadClass(String className) {
+        loadClass(className, true);
+    }
+
+    /**
      * 获取指定包下的所有类
      */
     public static Set<Class<?>> getClassSet(String packageName){
@@ -122,6 +130,5 @@ public final class ClassUtil {
         Class<?> cls = loadClass(className, false);
         classSet.add(cls);
     }
-
 
 }

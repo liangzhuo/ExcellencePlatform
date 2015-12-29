@@ -24,4 +24,8 @@ public class StringUtil {
     public static boolean isNotEmpty(String str){
         return !isEmpty(str);
     }
+
+    public static String[] splitString(String content, String splitString) {
+        return content.split(splitString);
+    }
 }
