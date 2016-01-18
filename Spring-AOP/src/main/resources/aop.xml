@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/context
+                           http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!-- 扫描指定包（将带有 Component 注解的类自动定义为 Spring Bean） -->
+    <context:component-scan base-package="com.liang"/>
+
+    <!-- 配置一个切面 -->
+    <bean id="greetingAdvisor" class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
+        <property name="advice" ref="greetingAroundAdvice"/>
+        <!--
+            切点（正则表达式）
+            .* 表示匹配所有字符
+        -->
+        <property name="pattern" value="com.liang.GreetingImpl.good.*"/>
+    </bean>
+
+    <!-- 配置一个代理 -->
+    <bean id="greetingProxy" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <!-- 接口实现类 -->
+        <property name="target" ref="greetingImpl"/>
+        <!-- 拦截器名称（也就是增强类名称）Spring Bean的id -->
+        <property name="interceptorNames" value="greetingAdvisor"/>
+        <!-- 代理目标类 -->
+        <property name="proxyTargetClass" value="true"/>
+    </bean>
+
+</beans>
