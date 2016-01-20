@@ -108,5 +108,26 @@ public class GreetingTest {
         greetingImpl.goodNight("John");
     }
 
+    @Test
+    public void testAnnotationAspect() {
+        // 获取 Spring Context
+        ApplicationContext context = new ClassPathXmlApplicationContext("aspect.xml");
+        GreetingAnnotationImpl greetingImpl = (GreetingAnnotationImpl) context.getBean("greetingAnnotationImpl");
+        greetingImpl.sayHello("jack");
+        greetingImpl.goodMorning("Peter");
+        greetingImpl.goodNight("John");
+    }
+
+    @Test
+    public void testDeclareAspect() {
+        // 获取 Spring Context
+        ApplicationContext context = new ClassPathXmlApplicationContext("aspect.xml");
+        Greeting greeting = (Greeting) context.getBean("greetingImpl");
+        greeting.sayHello("jack");
+
+        Apology apology = (Apology) greeting;
+        apology.saySorry("peter");
+    }
+
 
 }
